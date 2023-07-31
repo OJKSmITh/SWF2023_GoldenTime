@@ -1,4 +1,4 @@
-import { IBtn } from "interface/interface"
+import { IBtn } from "@utils/interface/interface"
 import { BtnWrap } from "./styled"
 
 export const Button = (props: IBtn) => {

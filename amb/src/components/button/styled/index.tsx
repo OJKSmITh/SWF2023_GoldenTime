@@ -1,4 +1,4 @@
-import { BtnProps } from "interface/styled.interface"
+import { BtnProps } from "@utils/interface/styled.interface"
 import { styled } from "styled-components"
 
 export const BtnWrap = styled.button<BtnProps>`
