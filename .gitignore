@@ -14,3 +14,20 @@ accounts.json
 cache
 artifacts
 
+# Local .terraform directories
+**/.terraform/*
+
+# tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+*.tfvars.json
+
+# no creds
+*.pem
+
+# terraformrc file
+terraform.rc
+.terraformrc
