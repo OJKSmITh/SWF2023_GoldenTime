@@ -36,7 +36,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
     
     useEffect(()=>{
         if(!provider || !signer) return
-        const contract = new ethers.Contract("0xf02F713033F0B7730dC3110101832Ab3eD5C183d", goldenTime.abi, provider) // AMB 콘트랙트입니다. 
+        const contract = new ethers.Contract("0xBC2CcBa66C4C7343E3FF9998800f8F83173809e4", goldenTime.abi, provider) // AMB 콘트랙트입니다. 
         const signedContract = contract.connect(signer)
         setContract(signedContract)
     },[provider])
@@ -108,16 +108,16 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
         e.preventDefault()
         if(!contract) return
         const signers = await signer?.getAddress()
-        const tx = await contract.received(14, signers)
+        const tx = await contract.received(23, signers)
         await tx.wait()
-        navigate({ pathname: '/Mypage' });
+        // navigate({ pathname: '/Mypage' });
     }
 
     const accept2Btn = async (e:React.MouseEvent<HTMLElement>) =>{
         e.preventDefault()
         if(!contract) return
         const signers = await signer?.getAddress()
-        const tx = await contract.reject(0, signers,"사망")
+        const tx = await contract.reject(23, signers,"사망")
         console.log(tx)
     }
     

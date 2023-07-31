@@ -5,6 +5,6 @@ export const FullWrap = styled.div`
     height: 74rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 `
