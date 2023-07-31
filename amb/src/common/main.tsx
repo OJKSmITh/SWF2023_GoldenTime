@@ -46,7 +46,7 @@ export const Main = () => {
 
     useEffect(() => {
         if (!contract) return
-        if (tokenId !== 0) navigator("/list")
+        if (tokenId !== null) navigator("/list")
         console.log("tokenId", tokenId)
         const listenser = (toInfo: string, _tokenId: number) => {
             console.log("Minted", toInfo, _tokenId)
@@ -58,7 +58,7 @@ export const Main = () => {
         return () => {
             contract.off("Minted", listenser)
         }
-    }, [contract])
+    }, [contract, tokenId])
 
     if (isLoading) return <Loading></Loading>
     return (

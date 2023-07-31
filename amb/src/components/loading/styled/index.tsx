@@ -59,4 +59,5 @@ export const Loader = styled.div`
     text-indent: -9999em;
     animation: ${mulShdSpin} 1.3s infinite linear;
     transform: translateZ(0);
+    margin-bottom: 7rem;
 `

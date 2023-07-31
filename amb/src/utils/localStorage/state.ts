@@ -10,7 +10,7 @@ export type SignedContractState = ethers.Contract | null
 
 export const TokenId = atom({
     key: "TokenId",
-    default: 0,
+    default: null,
     effects_UNSTABLE: [persistAtom],
 })
 export const SignedContract = atom<SignedContractState>({
