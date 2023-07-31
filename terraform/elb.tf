@@ -189,3 +189,21 @@ resource "aws_lb_listener" "back_listener_443" {
     type             = "forward"
   }
 }
+
+resource "aws_lb_target_group_attachment" "ambulance" {
+  target_group_arn = aws_lb_target_group.ambulance_tg.arn
+  target_id        = aws_instance.ambulance.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "hospital" {
+  target_group_arn = aws_lb_target_group.hospital_tg.arn
+  target_id        = aws_instance.hospital.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "back" {
+  target_group_arn = aws_lb_target_group.back_tg.arn
+  target_id        = aws_instance.back.id
+  port             = 80
+}
