@@ -107,3 +107,18 @@ resource "aws_db_subnet_group" "db_subnet" {
   description = "${var.project} db subnet groups"
   subnet_ids  = [aws_subnet.private_subnet[0].id, aws_subnet.private_subnet[1].id]
 }
+
+resource "aws_eip" "ambulance" {
+  instance = aws_instance.ambulance.id
+  domain   = "vpc"
+}
+
+resource "aws_eip" "hospital" {
+  instance = aws_instance.hospital.id
+  domain   = "vpc"
+}
+
+resource "aws_eip" "back" {
+  instance = aws_instance.back.id
+  domain   = "vpc"
+}
