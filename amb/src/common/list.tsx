@@ -1,8 +1,6 @@
 import { Header } from "@components/Header"
-import { useQuery } from "@tanstack/react-query"
 import { useSigner } from "@utils/hooks/useSigner"
 import { TokenId } from "@utils/localStorage"
-import { get } from "http"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useRecoilValue } from "recoil"
@@ -14,6 +12,7 @@ export const List = () => {
     const tokenId = useRecoilValue(TokenId)
 
     useEffect(() => {
+        if (tokenId === null) navigator("/")
         tokenId !== null && navigator("/list")
         const handleBeforeunload = (e: BeforeUnloadEvent) => {
             e.preventDefault()
@@ -31,7 +30,7 @@ export const List = () => {
         if (!contract) return
         console.log("tokenId", tokenId)
         const listenser = (_tokenId: number, _hospital: string, state: boolean, reason: string) => {
-            console.log("HospitalList", Number(_tokenId), _hospital)
+            console.log("HospitalList", Number(_tokenId), _hospital, state, reason)
         }
         contract.on("HospitalList", listenser)
 
