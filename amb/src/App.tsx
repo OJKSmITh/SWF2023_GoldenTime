@@ -1,4 +1,11 @@
+import { Main } from "./common"
+import { FullWrap } from "./styled"
+
 const App = () => {
-    return <>11</>
+    return (
+        <FullWrap>
+            <Main />
+        </FullWrap>
+    )
 }
 export default App
