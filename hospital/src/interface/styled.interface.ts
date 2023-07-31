@@ -4,15 +4,16 @@ export interface BtnProps{
     width?: number
     height?: number
     size?: number
-    onclick? :()=>void
+    onclick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export interface DivProps{
     width?: number
-    height? : number
+    height? : number | string
     justify? :string
     align? : string
     flex? : string
     size? : number
     direction?: string
+    right? :number
 }

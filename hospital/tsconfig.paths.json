@@ -7,7 +7,8 @@
             "@common/*": ["common/*"],
             "@type/*": ["type/*"],
             "@img/*": ["img/*"],
-            "@styled/*": ["styled/*"]
+            "@styled/*": ["styled/*"],
+            "@contracts/*": ["contracts/*"]
         }
     }
 }

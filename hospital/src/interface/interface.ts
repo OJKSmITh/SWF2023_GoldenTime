@@ -1,3 +1,5 @@
+import { Dispatch, ReactNode, SetStateAction } from 'react'
+
 export interface IBtn {
     text:string
     color: string
@@ -13,3 +15,12 @@ export interface IHosMain {
     Amb?: string
     PatientState?: string
 }
+
+export interface ICustomModal {
+    isOpen?: boolean
+    content?: ReactNode
+    onClose?: Dispatch<SetStateAction<boolean>>
+    width?: number
+    height?: number
+    left?: number
+  }
