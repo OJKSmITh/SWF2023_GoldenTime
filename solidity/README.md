@@ -11,3 +11,8 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
+
+김부연 : 금융 토큰화
+
+    PatientState = {1,1,1,"환자 테스트입니다. "}
+    KTAS, age, gender, state
