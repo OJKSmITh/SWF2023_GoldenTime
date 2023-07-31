@@ -18,6 +18,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null)
     const [signer, setSigner] = useState<ethers.Signer | null>(null)
     const [patient, setPatient] = useState<Patient | null>(null);
+    const [patientArray, setPatientArray] = useState<string[]>([]);
     const [contract, setContract] = useState<ethers.Contract | null>(null)
     const [KTASMessage, setKTASMessage] =useState("")
     const [ageString, setAgeString] =useState("")
@@ -35,7 +36,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
     
     useEffect(()=>{
         if(!provider || !signer) return
-        const contract = new ethers.Contract("0xBC2CcBa66C4C7343E3FF9998800f8F83173809e4", goldenTime.abi, provider) // AMB 콘트랙트입니다. 
+        const contract = new ethers.Contract("0xf02F713033F0B7730dC3110101832Ab3eD5C183d", goldenTime.abi, provider) // AMB 콘트랙트입니다. 
         const signedContract = contract.connect(signer)
         setContract(signedContract)
     },[provider])
@@ -95,6 +96,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
 
     useEffect(() => {
         if (patient) {
+            const data ={}
             setKTASMessage(getKTASMessage(patient.KTAS));
             setGenderString(getGenderString(patient.gender));
             setAgeString(getAgeString(patient.age));
@@ -106,7 +108,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
         e.preventDefault()
         if(!contract) return
         const signers = await signer?.getAddress()
-        const tx = await contract.received(12, signers)
+        const tx = await contract.received(14, signers)
         await tx.wait()
         navigate({ pathname: '/Mypage' });
     }
