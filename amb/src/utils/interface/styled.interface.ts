@@ -3,4 +3,7 @@ export interface BtnProps {
     width: number | string
     margin?: string
     height: number | string
+    color?: string
+    disabled?: boolean
+    onClick?: (e:MouseEvent) => void
 }

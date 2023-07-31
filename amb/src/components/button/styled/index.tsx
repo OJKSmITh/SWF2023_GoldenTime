@@ -11,13 +11,13 @@ export const BtnWrap = styled.button<BtnProps>`
     align-items: center;
     border: none;
     background: none;
+    color: ${(props) => props.color};
+    font-size: ${(props) => props.height === "5rem" ? "1.6rem" : "1.4rem"};
+    cursor: ${props =>props.disabled ? "" :"pointer"};
+    
 `
 
-export const MainBtnWrap = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+export const ColWrap = styled.div`
     width: 100%;
-    height: 5rem;
-    margin-top: 2rem;
+    height: 100%;
 `
