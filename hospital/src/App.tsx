@@ -1,4 +1,4 @@
 const App = () => {
-    return <>11</>
+    return <FullWrap>11</FullWrap>
 }
 export default App
