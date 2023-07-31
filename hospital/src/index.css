@@ -17,10 +17,6 @@ html {
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
 }
-#root {
-    width: 36rem;
-    height: 74rem;
-}
 ul,
 li {
     list-style: none;
@@ -30,3 +26,4 @@ a {
     cursor: pointer;
     color: #fff;
 }
+
