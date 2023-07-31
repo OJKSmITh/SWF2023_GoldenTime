@@ -34,7 +34,9 @@ contract GoldenTime is ERC721URIStorage, Ownable {
 
     event HospitalList(
         uint256 tokenId,
-        address _hospital
+        address _hospital,
+        bool state,
+        string reason
     );
 
     function occurs(
@@ -49,14 +51,13 @@ contract GoldenTime is ERC721URIStorage, Ownable {
         mint(state);
     }
 
-    function mint(string memory toInfo) public returns (uint256) {
+    function mint(string memory toInfo) public {
         // require(checkAmbAddress(msg.sender),"Not a licensed ambulance");
 
         _safeMint(msg.sender, _tokenId);
         _setTokenURI(_tokenId, toInfo);
-        _tokenId++;
         emit Minted(toInfo, _tokenId);
-        return _tokenId;
+        _tokenId++;
     }
 
     function tokenURI(
@@ -69,7 +70,11 @@ contract GoldenTime is ERC721URIStorage, Ownable {
         // require(checkHospitalAddress(msg.sender),"Not a licensed hospital");
 
         HospitalLists[tokenId].push(_hospital);
-        emit HospitalList(tokenId, _hospital);
+        emit HospitalList(tokenId, _hospital, true, "accept");
+    }
+
+    function reject(uint256 tokenId, address _hospital, string memory reason) public {
+        emit HospitalList(tokenId, _hospital, false, reason);
     }
 
     function getHospitalList(uint256 key) external view returns (address[] memory) {
@@ -102,5 +107,21 @@ contract GoldenTime is ERC721URIStorage, Ownable {
 
     function checkHospitalAddress (address _hospital) public view returns(bool){
         return ambulance[_hospital];
+    }
+
+    function getList () public view returns(string[] memory){
+        if(_tokenId < 20){
+            string[] memory uris = new string[](_tokenId);
+            for(uint256 i = 0; i < _tokenId; i++){
+                uris[i] = tokenURI(i);
+            }
+            return uris;
+        } else {
+            string[] memory uris = new string[](20);
+            for(uint256 i = _tokenId - 20; i < _tokenId; i++){
+                uris[i] = tokenURI(i);
+            }
+            return uris;
+        }
     }
 }
