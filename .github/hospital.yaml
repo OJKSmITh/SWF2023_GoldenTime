@@ -1,0 +1,50 @@
+name: Deploy to Hospital Server
+
+on:
+    push:
+        branches:
+            - dev
+        paths:
+            - "hospital/**"
+
+jobs:
+    hospital_deploy:
+        runs-on: ubuntu-20.04
+        defaults:
+            run:
+                working-directory: hospital
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+
+            - name: Install node lts
+              run: |
+                  export NVM_DIR="$HOME/.nvm"
+                  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                  nvm install --lts
+
+            - name: Make Dot ENV
+              run: |
+                  echo "${ENV}" > .env
+              env:
+                  ENV: ${{ secrets.HOSPITAL_ENV }}
+
+            - name: Install Dependencies & Test
+              run: |
+                  npm install
+                  npm run test
+
+            - name: Build
+              run: |
+                  npm run build
+
+            - name: SCP
+              uses: appleboy/scp-action@master
+              with:
+                  host: ${{secrets.HOSPITAL_SERVER}}
+                  username: ${{secrets.USERNAME}}
+                  key: ${{secrets.HOSPITAL_SERVER_PRIVATE_KEY}}
+                  source: "hospital/build"
+                  target: "www"
+                  strip_components: 1
