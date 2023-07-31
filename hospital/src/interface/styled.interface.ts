@@ -8,7 +8,7 @@ export interface BtnProps{
 }
 
 export interface DivProps{
-    width?: number
+    width?:number | string
     height? : number | string
     justify? :string
     align? : string
