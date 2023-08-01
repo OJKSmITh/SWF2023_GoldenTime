@@ -1,6 +1,7 @@
 import { Header } from "@components/Header"
 import { ColWrap } from "@components/button"
 import { ListComp } from "@components/list"
+import { Wrap } from "@styled/index"
 import { useSigner } from "@utils/hooks/useSigner"
 import { IHospital } from "@utils/interface/interface"
 import { TokenId } from "@utils/localStorage"

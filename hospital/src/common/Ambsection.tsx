@@ -1,5 +1,5 @@
 import { Btn } from "@components/button/button";
-import { DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
+import { Div, Div2, DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
 import { IHosMain } from "interface/interface";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -166,7 +166,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     return (
         <>
             <DivBasicST width={80} height={72}>
-                {renderPatientArray()}
+                {patientArray.length>0 ? renderPatientArray() :<div style={{ margin:"15rem 0 0 0", width:"100%", fontSize:"3rem", textAlign:"center"}}>대기 중입니다.</div>}
             </DivBasicST>
         </>
     );
