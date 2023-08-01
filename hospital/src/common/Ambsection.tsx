@@ -6,6 +6,9 @@ import { ethers } from "ethers";
 import goldenTime from "@contracts/GoldenTime.json";
 import { Patient } from "@components/patient/patient";
 import { Text } from "@components/text/text";
+import { useRecoilState } from "recoil";
+import { PatientList } from "utiles/localstorage/state";
+import { useInput } from "hooks/useinput";
 
 interface Patient {
     KTAS: number | string;
@@ -26,11 +29,11 @@ interface TokenArray {
 export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
     const [signer, setSigner] = useState<ethers.Signer | null>(null);
-    const [patientArray, setPatientArray] = useState<PatientArray>([]);
+    const [patientArray, setPatientArray] = useRecoilState<PatientArray>(PatientList);
     const [tokenArray, setTokenArray] = useState<TokenArray[]>([]);
     const [contract, setContract] = useState<ethers.Contract | null>(null);
-    const [tokenBool, setTokenBool] = useState<boolean>(false);
     const [hospitalAddress, setHospitalAddress] = useState<string>("");
+    const { value, onChange } = useInput();
 
     const getKTASMessage = (KTAS: number) => {
         if (0 < KTAS && KTAS < 6) return `KTAS ${KTAS}단계`;
@@ -110,8 +113,6 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         };
         const listener2 = (tokenId: Number, _hospital: string) => {
             const data = { tokenId: Number(tokenId), hospital: _hospital };
-            const a = patientArray.filter((v) => v.tokenId === data.tokenId);
-            console.log(a);
             setTokenArray((prev) => [...prev, data]);
         };
 
@@ -123,21 +124,42 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
             contract.off("Choice", listener2);
         };
     }, [contract]);
-    
+
+    useEffect(() => {
+        // tokenBool();
+    }, [tokenArray]);
+    const tokenBool = (data: { tokenId: number; hospital: string }) => {
+        console.log(patientArray);
+        console.log(data.tokenId);
+        const idx = patientArray.find((v) => v.tokenId === data.tokenId);
+        console.log(idx);
+    };
 
     const renderPatientArray = () => {
-        return patientArray.map((v, index) => (
-            <Div key={index}>
-                <DivContentWrapST width={"100%"} flex={"true"} justify={"space-between"}>
+        const reverse = [...patientArray].reverse();
+        return reverse.map((v, index) => (
+            <>
+                <DivContentWrapST width={"70rem"} flex={"true"} justify={"space-between"}>
                     <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
-                        <Div2 KTAS={v.KTAS}>환자{index + 1}</Div2>
+                        <div>환자{v.tokenId}</div>
                     </DivTextST>
                     <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
                         <div>{v.tokenBool === null ? <Text text="대기중" /> : v.tokenBool ? <Text text="후송중" color={true} /> : <Text text="타병원후송" color={false} />}</div>
                     </DivTextST>
                 </DivContentWrapST>
-                <Patient key={index} KTAS={v.KTAS} age={v.age} gender={v.gender} state={v.state} tokenId={v.tokenId} tokenBool={v.tokenBool} accept={acceptBtn} reject={rejectBtn}></Patient>
-            </Div>
+                <Patient
+                    key={index}
+                    KTAS={v.KTAS}
+                    age={v.age}
+                    gender={v.gender}
+                    state={v.state}
+                    tokenId={v.tokenId}
+                    tokenBool={v.tokenBool}
+                    accept={acceptBtn}
+                    reject={rejectBtn}
+                    change={onChange}
+                ></Patient>
+            </>
         ));
     };
 
