@@ -50,9 +50,9 @@ export const Main = () => {
     useEffect(() => {
         if (!contract) return
         if (tokenId !== null) navigator("/list")
-        const listenser = (toInfo: string, _tokenId: number) => {
-            console.log("Minted", toInfo, _tokenId)
-            setTokenId(Number(_tokenId))
+        const listenser = (toInfo: string, _tokenId: number, ambaddress:string) => {
+            console.log("Minted", toInfo, _tokenId, ambaddress, window.ethereum.selectedAddress)
+            if(ambaddress.toLowerCase() === window.ethereum.selectedAddress.toLowerCase()) setTokenId(Number(_tokenId))
             setIsLoading(false)
         }
         contract.on("Minted", listenser)

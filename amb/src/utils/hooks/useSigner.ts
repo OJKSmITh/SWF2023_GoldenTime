@@ -22,7 +22,7 @@ export const useSigner = () => {
     }, [])
     useEffect(() => {
         if (!provider || !signer) return
-        const contract = new ethers.Contract("0xBC2CcBa66C4C7343E3FF9998800f8F83173809e4", GoldenTime.abi, provider)
+        const contract = new ethers.Contract("0x07A099e3AD17fE0932D85f7767f358662680ADd2", GoldenTime.abi, provider)
         const signedContract = contract.connect(signer)
         setContract(signedContract)
     }, [signer])

@@ -51,7 +51,7 @@ const mulShdSpin = keyframes`
 
 export const Loader = styled.div`
     color: #ff0000;
-    font-size: 1rem;
+    font-size: 1.5rem;
     width: 1em;
     height: 1em;
     border-radius: 50%;
