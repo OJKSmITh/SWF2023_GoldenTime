@@ -49,7 +49,7 @@ export const ListComp = ({ hospital }: { hospital: IHospital; }) => {
             </div>
             {hospital.state ? <Button text={"병원 선택"} bg={" #4caf50"} height={"5rem"} width={"8rem"} onClick={handleClick}></Button> : <Button text={"선택 불가"} bg={" #bababa"} height={"5rem"} width={"8rem"} disable={true}></Button>}
         </FirstSection>
-        {hospital.state ? <></> : <div style={{ width:"100%" }}>
+        {hospital.state ? <></> : <div style={{ width:"80%" }}>
             사유 : {hospital.reason}
         </div>}
     </ListWrap>
