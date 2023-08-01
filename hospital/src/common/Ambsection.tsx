@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import goldenTime from "@contracts/GoldenTime.json";
 import { Patient } from "@components/patient/patient";
+import { Text } from "@components/text/text";
 
 interface Patient {
     KTAS: number | string;
@@ -25,7 +26,6 @@ interface TokenArray {
 export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
     const [signer, setSigner] = useState<ethers.Signer | null>(null);
-    const [patient, setPatient] = useState<Patient | null>(null);
     const [patientArray, setPatientArray] = useState<PatientArray>([]);
     const [tokenArray, setTokenArray] = useState<TokenArray[]>([]);
     const [contract, setContract] = useState<ethers.Contract | null>(null);
@@ -66,14 +66,21 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         return patients;
     };
 
-    const tokenValue = async (_tokenId: number) => {
-        if (!contract) return;
-        const checkTokenId = await contract.ownerOf(_tokenId);
-        console.log(hospitalAddress);
-        if (checkTokenId === hospitalAddress) setTokenBool(true);
-        setTokenBool(false);
+    const acceptBtn = async (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        const target = e.target as HTMLElement;
+        const parent = target.parentNode?.parentNode as HTMLElement;
+        if (contract) contract.received(parent.id, hospitalAddress);
+
+        // navigate({ pathname: '/Mypage' });
     };
 
+    const rejectBtn = async (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        const target = e.target as HTMLElement;
+        const parent = target.parentNode?.parentNode as HTMLElement;
+        if (contract) contract.reject(parent.id, hospitalAddress, "병상없음");
+    };
 
     useEffect(() => {
         if (!window.ethereum) return;
@@ -88,7 +95,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
 
     useEffect(() => {
         if (!provider || !signer) return;
-        const contract = new ethers.Contract("0xBC2CcBa66C4C7343E3FF9998800f8F83173809e4", goldenTime.abi, provider); // AMB 콘트랙트입니다.
+        const contract = new ethers.Contract("0x07A099e3AD17fE0932D85f7767f358662680ADd2", goldenTime.abi, provider); // AMB 콘트랙트입니다.
         const signedContract = contract.connect(signer);
         setContract(signedContract);
     }, [provider]);
@@ -99,13 +106,13 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         const listener = (level: Number, age: number, gender: number, state: string, timestamp: number, _tokenId: number) => {
             const data = { KTAS: Number(level), age: Number(age), gender: Number(gender), state: state, tokenId: Number(_tokenId), tokenBool: null };
             const patient = parsePatient(data);
-            setPatient(patient);
+            setPatientArray((prevPatientArray) => [...prevPatientArray, patient]);
         };
         const listener2 = (tokenId: Number, _hospital: string) => {
             const data = { tokenId: Number(tokenId), hospital: _hospital };
-            console.log(data);
+            const a = patientArray.filter((v) => v.tokenId === data.tokenId);
+            console.log(a);
             setTokenArray((prev) => [...prev, data]);
-
         };
 
         contract.on("Emergency", listener);
@@ -116,21 +123,8 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
             contract.off("Choice", listener2);
         };
     }, [contract]);
-
-    useEffect(() => {
-        if (patient) {
-            const cloneArray = [...patientArray, patient];
-            setPatientArray(cloneArray);
-        }
-    }, [patient]);
-
-    useEffect(() => {
-        if (tokenArray.length === 0) return;
-        console.log(tokenArray);
-        const lastToken = tokenArray[tokenArray.length - 1];
-        tokenValue(lastToken.tokenId);
-    }, [tokenArray]);
-
+    console.log(tokenArray[0].tokenId === patientArray[0].tokenId);
+    // console.log(tokenArray[0].hospital === hospitalAddress);
 
     const renderPatientArray = () => {
         return patientArray.map((v, index) => (
@@ -140,20 +134,18 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
                         <div>환자{index + 1}</div>
                     </DivTextST>
                     <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
-                        <div>{v.tokenBool === null ? "Waiting" : v.tokenBool ? "후송중" : "타병원후송"}</div>{" "}
+                        <div>{v.tokenBool === null ? <Text text="대기중" /> : v.tokenBool ? <Text text="후송중" color={true} /> : <Text text="타병원후송" color={false} />}</div>
                     </DivTextST>
                 </DivContentWrapST>
-                <Patient key={index} KTAS={v.KTAS} age={v.age} gender={v.gender} state={v.state} tokenId={v.tokenId} tokenBool={v.tokenBool}></Patient>
+                <Patient key={index} KTAS={v.KTAS} age={v.age} gender={v.gender} state={v.state} tokenId={v.tokenId} tokenBool={v.tokenBool} accept={acceptBtn} reject={rejectBtn}></Patient>
             </>
         ));
     };
 
-    if (!patient) return <></>;
     return (
         <>
             <DivBasicST width={80} height={72}>
                 {renderPatientArray()}
-                <Btn width={8} height={5} text={"???"} size={2}></Btn>
             </DivBasicST>
         </>
     );
