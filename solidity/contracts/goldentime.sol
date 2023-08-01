@@ -24,7 +24,8 @@ contract GoldenTime is ERC721URIStorage, Ownable {
         uint age,
         uint gender,
         string state,
-        uint timestamp
+        uint timestamp,
+        uint _tokenId
     );
 
     event Choice(
@@ -47,7 +48,7 @@ contract GoldenTime is ERC721URIStorage, Ownable {
     ) public {
         // require(checkAmbAddress(msg.sender),"Not a licensed ambulance");
 
-        emit Emergency(level, age, gender, state, block.timestamp);
+        emit Emergency(level, age, gender, state, block.timestamp, _tokenId);
         mint(state);
     }
 
