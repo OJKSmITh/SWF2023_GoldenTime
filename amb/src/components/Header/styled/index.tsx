@@ -5,7 +5,7 @@ export const HeaderST = styled.header`
     justify-content: center;
     align-items: center;
     font-size: 3rem;
-    margin-bottom: 5rem;
+    margin:0 auto 5rem;
 `
 export const ContentST = styled.div`
     display: flex;

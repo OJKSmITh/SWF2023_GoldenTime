@@ -7,10 +7,12 @@ export const SeelctWrap = styled.select`
     border: solid 0.1rem #00000030;
     margin-bottom: 1rem;
     font-size: 1.6rem;
+    padding: 0 1rem;
 `
 
 export const TextArea = styled.textarea`
     width: 100%;
+    padding: 1rem;
     height: 20rem;
     border: none;
     resize: none;

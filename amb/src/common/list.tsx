@@ -1,7 +1,7 @@
 import { Header } from "@components/Header"
 import { ColWrap } from "@components/button"
 import { ListComp } from "@components/list"
-import { FullWrap } from "@styled/index"
+import { Loading } from "@components/loading"
 import { useSigner } from "@utils/hooks/useSigner"
 import { IHospital } from "@utils/interface/interface"
 import { TokenId } from "@utils/localStorage"
@@ -14,6 +14,7 @@ export const List = () => {
     const navigator = useNavigate()
     const [hospitalList, setHospitalList] = useState<IHospital[]>([])
     const tokenId = useRecoilValue(TokenId)
+    const [isLoagind, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (tokenId === null) navigator("/")
@@ -53,12 +54,14 @@ export const List = () => {
             contract.off("HospitalList", listenser)
         }
     }, [contract, hospitalList, tokenId])
+
+    if(isLoagind) return <Loading/>
     return (
         <>
             <Header subject={"병원 리스트"} />
             <ColWrap>
-            {hospitalList.length === 0 ? <div style={{fontSize :"2rem", textAlign:"center"}}>응급 환자가 없습니다.</div> :hospitalList.map((hospital, index) => (
-                <ListComp hospital ={hospital} key={index} />
+            {hospitalList.length === 0 ? <div style={{fontSize :"2rem", textAlign:"center"}}>병원 응답을 대기 중입니다.</div> :hospitalList.map((hospital, index) => (
+                <ListComp hospital={hospital} key={index} setIsLoading={setIsLoading} />
                 ))}
             </ColWrap>
             

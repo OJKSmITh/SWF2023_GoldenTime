@@ -1,20 +1,41 @@
 import { Header } from "@components/Header"
 import { Form, TransferWrap } from "./styled"
-import { useRecoilValue } from "recoil"
-import { SelectHopital } from "@utils/localStorage"
+import { useRecoilValue, useResetRecoilState } from "recoil"
+import { SelectHopital, TokenId } from "@utils/localStorage"
 import { Button } from "@components/button"
+import { useSigner } from "@utils/hooks/useSigner"
+import { useState } from "react"
+import { Loading } from "@components/loading"
+import { useNavigate } from "react-router-dom"
 
 
 export const Transfer = () => {
-    
+    const { contract } = useSigner()
+    const tokenId = useRecoilValue(TokenId)
+    const resetTokenId = useResetRecoilState(TokenId)
+    const resetSelectHospital = useResetRecoilState(SelectHopital)
+    const navigator = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const selectHospital = useRecoilValue(SelectHopital)
     if(selectHospital === "") return null;  // 값을 반환하도록 수정
-    const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitHandler = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
-        console.log("submit")
+        if (!contract) return
+        setIsLoading(true)
+        const to = (e.target as HTMLFormElement).to.value
+        const from = (e.target as HTMLFormElement).from.value
+        try {
+            await contract.transferFrom(from, to, tokenId)
+            setIsLoading(false)
+            resetTokenId()
+            resetSelectHospital()
+        } catch (e:any) {
+            e.message.toString().includes("caller is not token owner or approved") ? alert("이미 환자 이송이 완료 되었습니다.") : alert(e.message)
+        }
     }
 
+    if (isLoading) return <Loading />
+    if (tokenId === null || selectHospital === null) navigator("/");  
     return (
     <TransferWrap>
         {selectHospital !== "" && (
