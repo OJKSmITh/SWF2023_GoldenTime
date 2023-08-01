@@ -3,7 +3,7 @@ import { SeelctWrap, TextArea } from "./styled"
 export const Select = ({ id }: { id: string }) => {
     return id === "level" ? (
         <SeelctWrap id={id}>
-            <option defaultChecked>선택</option>
+            <option defaultChecked>KTAS 단계</option>
             <option value="1">KTAS 1단계</option>
             <option value="2">KTAS 2단계</option>
             <option value="3">KTAS 3단계</option>
@@ -12,7 +12,7 @@ export const Select = ({ id }: { id: string }) => {
         </SeelctWrap>
     ) : id === "ages" ? (
         <SeelctWrap id={id}>
-            <option defaultChecked>선택</option>
+            <option defaultChecked>연령대</option>
             <option value="0">0~9세</option>
             <option value="1">10~19세</option>
             <option value="2">20~29세</option>
@@ -26,11 +26,11 @@ export const Select = ({ id }: { id: string }) => {
         </SeelctWrap>
     ) : id === "gender" ? (
         <SeelctWrap id={id}>
-            <option defaultChecked>선택</option>
+            <option defaultChecked>성별</option>
             <option value="1">남성</option>
             <option value="2">여성</option>
         </SeelctWrap>
     ) : (
-        <TextArea id={id} />
+        <TextArea id={id} placeholder="환자의 상태 또는 신고 내용을 적어주세요"/>
     )
 }

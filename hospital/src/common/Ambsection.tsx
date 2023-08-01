@@ -106,7 +106,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
     useEffect(()=>{
         if(!contract) return
         
-        const listener = (level:Number, age:number, gender:number ,state:string, timestamp:number) => {
+        const listener = (level:Number, age:number, gender:number ,state:string, timestamp:number, tokenId:number) => {
             const data = {"KTAS":Number(level), "age":Number(age), "gender":Number(gender), "state":state}
             setPatient(data)
         };
@@ -166,7 +166,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
         e.preventDefault()
         if(!contract) return
         const signers = await signer?.getAddress()
-        const tx = await contract.received(24, signers)
+        const tx = await contract.received(28, signers)
         await tx.wait()
         // navigate({ pathname: '/Mypage' });
     }
@@ -175,7 +175,7 @@ export const AmbSection = ({Amb, PatientState}:IHosMain) =>{
         e.preventDefault()
         if(!contract) return
         const signers = await signer?.getAddress()
-        const tx = await contract.reject(17, signers, "사망")
+        const tx = await contract.reject(28, signers, "사망")
         console.log(tx)
     }
 

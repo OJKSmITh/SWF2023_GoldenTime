@@ -26,8 +26,12 @@ export const Main = () => {
         } catch (e: any) {
             if (e.message.toString().includes("user rejected")) {
                 alert("취소 되었습니다.")
+                setIsLoading(false)
+            } else {
+                (typeof level !== "number" || typeof gender !== "number" || typeof age !== "number")
+                    ? alert("입력값을 확인해주세요")
+                    : alert(e.message)
             }
-            alert(e.message)
         }
     }
 
@@ -39,15 +43,13 @@ export const Main = () => {
         const age = Number((form.querySelector("#ages") as HTMLSelectElement).value)
         const state = String((form.querySelector("#state") as HTMLTextAreaElement).value)
         console.log(level, gender, age, state)
-        if ((typeof level !== "number" || typeof gender !== "number" || typeof age !== "number") && contract)
-            return alert("입력값을 확인해주세요")
+        if ((isNaN(level) || isNaN(gender) || isNaN(age)))return alert("입력값을 확인해주세요")
         occurse({ level, age, gender, state })
     }
 
     useEffect(() => {
         if (!contract) return
         if (tokenId !== null) navigator("/list")
-        console.log("tokenId", tokenId)
         const listenser = (toInfo: string, _tokenId: number) => {
             console.log("Minted", toInfo, _tokenId)
             setTokenId(Number(_tokenId))
@@ -63,7 +65,7 @@ export const Main = () => {
     if (isLoading) return <Loading></Loading>
     return (
         <form onSubmit={handleSubmit}>
-            <Header subject={"발생"} />
+            <Header subject={"응급 환자 발생"} />
             <Select id="level"></Select>
             <Select id="ages"></Select>
             <Select id="gender"></Select>
@@ -71,6 +73,7 @@ export const Main = () => {
             <Button
                 id={"submit"}
                 text={"제출하기"}
+                color="#ffffff"
                 bg={"#e24f4f"}
                 height={"5rem"}
                 width={"100%"}

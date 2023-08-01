@@ -12,7 +12,7 @@ export const BtnWrap = styled.button<BtnProps>`
     border: none;
     background: none;
     color: ${(props) => props.color};
-    font-size: ${(props) => props.height === "5rem" ? "1.6rem" : "1.4rem"};
+    font-size: ${(props) => props.height === "5rem" ? "1.8rem" : "1.6rem"};
     cursor: ${props =>props.disabled ? "" :"pointer"};
     
 `
@@ -20,4 +20,8 @@ export const BtnWrap = styled.button<BtnProps>`
 export const ColWrap = styled.div`
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
 `
