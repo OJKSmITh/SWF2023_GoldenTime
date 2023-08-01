@@ -15,10 +15,10 @@ export const ListWrap = styled.div`
 `
 
 export const FirstSection = styled.div`
-    width: 100%;
+    width: 80%;
     height: 5rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 `
 

@@ -25,7 +25,7 @@ const config: HardhatUserConfig = {
             gasPrice: 25000000000,
         },
         cronos: {
-            url: "https://evm-t3.cronos.org/",
+            url: "https://evm-dev-t3.cronos.org/",
             chainId: 338,
             accounts: require("./accounts.json").privateKey,
             gasPrice: 5000000000000,
