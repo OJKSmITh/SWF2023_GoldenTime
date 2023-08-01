@@ -3,7 +3,7 @@ name: Deploy to Ambulance Server
 on:
     push:
         branches:
-            - dev
+            - main
         paths:
             - "amb/**"
 
