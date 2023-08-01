@@ -2,14 +2,16 @@ import { IHospital } from "@utils/interface/interface"
 import { FirstSection, ListWrap } from "./styled"
 import { Button } from "@components/button"
 import { useSigner } from "@utils/hooks/useSigner"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
 import { SelectHopital } from "@utils/localStorage"
 import { useNavigate } from "react-router-dom"
+import { Loading } from "@components/loading"
 
 
-export const ListComp = ({ hospital, setIsLoading }: { hospital: IHospital; setIsLoading:Dispatch<SetStateAction<boolean>> }) => {
+export const ListComp = ({ hospital }: { hospital: IHospital; }) => {
     const { contract } = useSigner()
+    const [isLoagind, setIsLoading] = useState(false)
     const navigator = useNavigate()
     const [selectHospital, setSelectHospital] = useRecoilState(SelectHopital)
     const handleClick = async() => {
@@ -21,14 +23,15 @@ export const ListComp = ({ hospital, setIsLoading }: { hospital: IHospital; setI
         } catch (e:any) {
             alert(e.message)
         }
-     }
+    }
     
     useEffect(() => {
-    if (!contract) return
-    const listenser = ( tokenId : number, _hospital :string ) => {
+        if (!contract) return
+        console.log(contract,11111)
+    const listenser = ( tokenId : number, _hospital:string ) => {
         console.log("Choice", tokenId, _hospital)
-        setIsLoading(false)
         setSelectHospital(_hospital);
+        setIsLoading(false)
         navigator("/transfer")
     }
     contract.on("Choice", listenser)
@@ -36,9 +39,9 @@ export const ListComp = ({ hospital, setIsLoading }: { hospital: IHospital; setI
     return () => {
         contract.off("Choice", listenser)
     }
-    }, [contract])
+    }, [contract, selectHospital])
 
-    
+    if(isLoagind) return <Loading/>
     return <ListWrap>
         <FirstSection>
             <div>

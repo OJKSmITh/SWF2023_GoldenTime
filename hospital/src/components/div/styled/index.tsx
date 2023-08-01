@@ -11,6 +11,7 @@ export const DivBasicST = styled.div<DivProps>`
     align-items: ${(props) => (props.align ? "flex-start" : "")};
     margin: 0 auto;
     margin-top: 3rem;
+    
 `;
 
 export const DivTextST = styled.div<DivProps>`
