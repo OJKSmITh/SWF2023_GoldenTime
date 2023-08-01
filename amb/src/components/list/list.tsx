@@ -2,25 +2,32 @@ import { IHospital } from "@utils/interface/interface"
 import { FirstSection, ListWrap } from "./styled"
 import { Button } from "@components/button"
 import { useSigner } from "@utils/hooks/useSigner"
-import { useEffect } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
 import { SelectHopital } from "@utils/localStorage"
 import { useNavigate } from "react-router-dom"
 
-export const ListComp = ({ hospital }: { hospital: IHospital }) => {
+
+export const ListComp = ({ hospital, setIsLoading }: { hospital: IHospital; setIsLoading:Dispatch<SetStateAction<boolean>> }) => {
     const { contract } = useSigner()
     const navigator = useNavigate()
     const [selectHospital, setSelectHospital] = useRecoilState(SelectHopital)
     const handleClick = async() => {
         if (!contract) return
-        const result = await contract.choice(hospital.tokenId, hospital.hospital)
-        console.log(result)
+        try {
+            setIsLoading(true)
+            await contract.choice(hospital.tokenId, hospital.hospital)
+            
+        } catch (e:any) {
+            alert(e.message)
+        }
      }
     
     useEffect(() => {
     if (!contract) return
     const listenser = ( tokenId : number, _hospital :string ) => {
         console.log("Choice", tokenId, _hospital)
+        setIsLoading(false)
         setSelectHospital(_hospital);
         navigator("/transfer")
     }
@@ -31,6 +38,7 @@ export const ListComp = ({ hospital }: { hospital: IHospital }) => {
     }
     }, [contract])
 
+    
     return <ListWrap>
         <FirstSection>
             <div>

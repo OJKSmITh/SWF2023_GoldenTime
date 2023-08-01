@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
 
 export const ListWrap = styled.div`
-
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

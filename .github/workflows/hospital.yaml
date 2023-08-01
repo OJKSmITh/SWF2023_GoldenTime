@@ -1,18 +1,18 @@
-name: Deploy to Ambulance Server
+name: Deploy to Hospital Server
 
 on:
     push:
         branches:
-            - dev
+            - main
         paths:
-            - "amb/**"
+            - "hospital/**"
 
 jobs:
-    ambulance_deploy:
+    hospital_deploy:
         runs-on: ubuntu-20.04
         defaults:
             run:
-                working-directory: amb
+                working-directory: hospital
 
         steps:
             - name: Checkout Code
@@ -28,7 +28,7 @@ jobs:
               run: |
                   echo "${ENV}" > .env
               env:
-                  ENV: ${{ secrets.AMBULANCE_ENV }}
+                  ENV: ${{ secrets.HOSPITAL_ENV }}
 
             - name: Install Dependencies & Test
               run: |
@@ -42,9 +42,9 @@ jobs:
             - name: SCP
               uses: appleboy/scp-action@master
               with:
-                  host: ${{secrets.AMBULANCE_SERVER}}
+                  host: ${{secrets.HOSPITAL_SERVER}}
                   username: ${{secrets.USERNAME}}
-                  key: ${{secrets.AMBULANCE_SERVER_PRIVATE_KEY}}
-                  source: "amb/build"
+                  key: ${{secrets.HOSPITAL_SERVER_PRIVATE_KEY}}
+                  source: "hospital/build"
                   target: "www"
                   strip_components: 1

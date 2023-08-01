@@ -74,6 +74,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         setTokenBool(false);
     };
 
+
     useEffect(() => {
         if (!window.ethereum) return;
         const providers = new ethers.providers.Web3Provider(window.ethereum);
@@ -104,6 +105,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
             const data = { tokenId: Number(tokenId), hospital: _hospital };
             console.log(data);
             setTokenArray((prev) => [...prev, data]);
+
         };
 
         contract.on("Emergency", listener);
@@ -128,6 +130,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         const lastToken = tokenArray[tokenArray.length - 1];
         tokenValue(lastToken.tokenId);
     }, [tokenArray]);
+
 
     const renderPatientArray = () => {
         return patientArray.map((v, index) => (
