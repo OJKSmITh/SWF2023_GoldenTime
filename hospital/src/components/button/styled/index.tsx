@@ -8,5 +8,6 @@ export const BtnST = styled.button<BtnProps>`
     background-color: ${(props) => (props.color ? props.color : "#fff")};
     color: #fff;
     border: 0.2rem solid #999999;
+    cursor: pointer;
 `;
 

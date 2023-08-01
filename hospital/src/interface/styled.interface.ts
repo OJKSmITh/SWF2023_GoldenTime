@@ -4,6 +4,7 @@ export interface BtnProps {
     width?: number;
     height?: number;
     size?: number;
+    id?: string;
     onclick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
@@ -17,3 +18,4 @@ export interface DivProps {
     direction?: string;
     right?: number;
 }
+
