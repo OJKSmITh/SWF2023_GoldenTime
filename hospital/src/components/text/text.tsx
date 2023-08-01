@@ -1,15 +1,15 @@
 import { styled } from "styled-components";
 
-const PST = styled.p`
-    color: ${(props) => (!props.color ? "#000000" : props.color ? "green" : "red")};
-`;
-
 interface Itext {
     color?: boolean;
-    text: string;
+    text?: string;
 }
 
+const PST = styled.p<Itext>`
+    color: ${(props) => (props.color ? "#fff" : "#000")};
+`;
+
 export const Text: React.FC<Itext> = ({ color, text }) => {
-    return <PST>{text}</PST>;
+    return <PST color={color}>{text}</PST>;
 };
 

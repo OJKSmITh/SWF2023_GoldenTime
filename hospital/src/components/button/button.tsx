@@ -4,7 +4,7 @@ import { BtnST } from "./styled";
 export const Btn = (props: BtnProps) => {
     return (
         <>
-            <BtnST width={props.width} height={props.height} size={props.size} onClick={props.onclick} color={props.color}>
+            <BtnST id={props.id} width={props.width} height={props.height} size={props.size} onClick={props.onclick} color={props.color}>
                 {props.text}
             </BtnST>
         </>

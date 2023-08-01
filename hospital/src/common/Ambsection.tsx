@@ -1,5 +1,4 @@
-import { Btn } from "@components/button/button";
-import { Div, Div2, DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
+import { Div, Div2, Div3, DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
 import { IHosMain } from "interface/interface";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -34,6 +33,7 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     const [contract, setContract] = useState<ethers.Contract | null>(null);
     const [hospitalAddress, setHospitalAddress] = useState<string>("");
     const { value, onChange } = useInput();
+    const [rejectstate, setRejectState] = useState<string>("0");
 
     const getKTASMessage = (KTAS: number) => {
         if (0 < KTAS && KTAS < 6) return `KTAS ${KTAS}단계`;
@@ -72,17 +72,28 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     const acceptBtn = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         const target = e.target as HTMLElement;
-        const parent = target.parentNode?.parentNode as HTMLElement;
-        if (contract) contract.received(parent.id, hospitalAddress);
+        if (contract)
+            contract.received(target.id, hospitalAddress, {
+                gasLimit: 800000,
+            });
 
         // navigate({ pathname: '/Mypage' });
+    };
+
+    const cancelBtn = (e: React.MouseEvent<HTMLElement>) => {
+        setRejectState("0");
     };
 
     const rejectBtn = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         const target = e.target as HTMLElement;
-        const parent = target.parentNode?.parentNode as HTMLElement;
-        if (contract) contract.reject(parent.id, hospitalAddress, "병상없음");
+        setRejectState(target.id);
+        if (contract && value !== "") {
+            const tx = await contract.reject(target.id, hospitalAddress, value, {
+                gasLimit: 800000,
+            });
+            return setRejectState("0");
+        }
     };
 
     useEffect(() => {
@@ -126,25 +137,38 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     }, [contract]);
 
     useEffect(() => {
-        // tokenBool();
+        if (!tokenArray[0]) return;
+        const clone = { ...tokenArray[0] };
+        console.log(clone);
+        tokenBool(clone);
+        // setTokenArray([]);
     }, [tokenArray]);
+
     const tokenBool = (data: { tokenId: number; hospital: string }) => {
-        console.log(patientArray);
-        console.log(data.tokenId);
-        const idx = patientArray.find((v) => v.tokenId === data.tokenId);
-        console.log(idx);
+        const idx = patientArray.findIndex((v) => v.tokenId === data.tokenId);
+        const clone = [...patientArray];
+
+        if (hospitalAddress === data.hospital) {
+            const objclone = { ...clone[idx], tokenBool: true };
+            clone[idx] = objclone;
+            setPatientArray(clone);
+            return;
+        }
+        const objclone = { ...clone[idx], tokenBool: false };
+        clone[idx] = objclone;
+        setPatientArray(clone);
     };
 
     const renderPatientArray = () => {
         const reverse = [...patientArray].reverse();
         return reverse.map((v, index) => (
-            <>
-                <DivContentWrapST width={"70rem"} flex={"true"} justify={"space-between"}>
-                    <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
-                        <div>환자{v.tokenId}</div>
+            <Div key={index}>
+                <DivContentWrapST width={"100%"} flex={"true"} justify={"space-between"}>
+                    <DivTextST width={"15rem"} height={"100%"} size={"1.5rem"} justify={"space-between"} align={"center"}>
+                        <Div2 ktas={v.KTAS}>환자{v.tokenId}</Div2>
                     </DivTextST>
-                    <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
-                        <div>{v.tokenBool === null ? <Text text="대기중" /> : v.tokenBool ? <Text text="후송중" color={true} /> : <Text text="타병원후송" color={false} />}</div>
+                    <DivTextST width={"15rem"} height={"100%"} size={"1.5rem"} justify={"space-between"} align={"center"}>
+                        <Div3 color={v.tokenBool}>{v.tokenBool === null ? <Text text="대기중" /> : v.tokenBool ? <Text text="후송중" color={true} /> : <Text text="타병원후송" color={true} />}</Div3>
                     </DivTextST>
                 </DivContentWrapST>
                 <Patient
@@ -158,15 +182,17 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
                     accept={acceptBtn}
                     reject={rejectBtn}
                     change={onChange}
+                    cancel={cancelBtn}
+                    rejectstate={rejectstate === v.tokenId.toString()}
                 ></Patient>
-            </>
+            </Div>
         ));
     };
 
     return (
         <>
             <DivBasicST width={80} height={72}>
-                {patientArray.length>0 ? renderPatientArray() :<div style={{ margin:"15rem 0 0 0", width:"100%", fontSize:"3rem", textAlign:"center"}}>대기 중입니다.</div>}
+                {patientArray.length > 0 ? renderPatientArray() : <div style={{ margin: "15rem 0 0 0", width: "100%", fontSize: "3rem", textAlign: "center" }}>대기 중입니다.</div>}
             </DivBasicST>
         </>
     );
