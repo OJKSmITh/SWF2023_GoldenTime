@@ -73,9 +73,13 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         e.preventDefault();
         const target = e.target as HTMLElement;
         if (contract)
-            contract.received(target.id, hospitalAddress, {
-                gasLimit: 800000,
-            });
+            try {
+                const tx = await contract.received(target.id, hospitalAddress, {
+                    gasLimit: 800000,
+                });
+            } catch (error: any) {
+                alert(error.messege);
+            }
 
         // navigate({ pathname: '/Mypage' });
     };
@@ -89,10 +93,14 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
         const target = e.target as HTMLElement;
         setRejectState(target.id);
         if (contract && value !== "") {
-            const tx = await contract.reject(target.id, hospitalAddress, value, {
-                gasLimit: 800000,
-            });
-            return setRejectState("0");
+            try {
+                const tx = await contract.reject(target.id, hospitalAddress, value, {
+                    gasLimit: 800000,
+                });
+                return setRejectState("0");
+            } catch (error: any) {
+                alert(error.messege);
+            }
         }
     };
 
@@ -139,9 +147,8 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
     useEffect(() => {
         if (!tokenArray[0]) return;
         const clone = { ...tokenArray[0] };
-        console.log(clone);
         tokenBool(clone);
-        // setTokenArray([]);
+        setTokenArray([]);
     }, [tokenArray]);
 
     const tokenBool = (data: { tokenId: number; hospital: string }) => {
