@@ -21,10 +21,17 @@ export const FullWrap = styled.div`
         opacity : 0.4;
         z-index: -1;
         background-image: url(${bg});
-        background-size: contain;
+        background-size: 95%;
         background-repeat: no-repeat;
         background-position: center;
     }
-    
 `
 
+export const Wrap = styled.div`
+    width: 100%;
+    height: auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    border: 0.1rem solid #b5b5b5;
+`

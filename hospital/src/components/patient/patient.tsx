@@ -3,14 +3,14 @@ import { useState } from "react";
 import { styled } from "styled-components";
 
 const WrapST = styled.div`
-    position: relative;
-    width: 75rem;
+    width: 100%;
     height: 10rem;
     margin-bottom: 2rem;
+    border-radius: 2rem;
 `;
 
 const DivWrapST = styled.div`
-    width: 75rem;
+    width: 100%;
     height: 4rem;
     display: flex;
     justify-content: space-between;
@@ -20,29 +20,30 @@ const DivWrapST = styled.div`
 `;
 
 const DivST = styled.div`
-    width: 25rem;
     height: 4rem;
-    font-size: 2.5rem;
-    padding: 1rem;
+    font-size: 2.2rem;
+    display: flex;
+    justify-content: center;    
+    align-items: center;        
     box-sizing: border-box;
 `;
 
 const StateDivST = styled.div`
-    width: 75rem;
-    height: 5rem;
-    font-size: 2rem;
-    padding: 1.5rem;
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+    padding: 0 0.5rem  ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const ButtonsST = styled.div`
-    width: 20rem;
-    height: 15rem;
-    position: absolute;
-    right: -20rem;
-    top: -4rem;
+    width: 30%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: space-around;
+    align-items: center;
 `;
 
 interface Patient {
@@ -71,13 +72,15 @@ export const Patient: React.FC<Patient> = (props) => {
                     <DivST>나이 : {props.age}</DivST>
                     <DivST>성별 : {props.gender}</DivST>
                 </DivWrapST>
-                <StateDivST>환자상태 : {props.state}</StateDivST>
+                <StateDivST>
+                    환자상태 : {props.state}
                 {status && (
                     <ButtonsST>
-                        <Btn width={8} height={4} text={"수락"} size={2} onclick={props.accept} color={"green"}></Btn>
-                        <Btn width={8} height={4} text={"거절"} size={2} onclick={props.reject} color={"red"}></Btn>
+                        <Btn width={8} height={4} text={"수락"} size={2} onclick={props.accept} color={"#4caf50"}></Btn>
+                        <Btn width={8} height={4} text={"거절"} size={2} onclick={props.reject} color={"#f44336;"}></Btn>
                     </ButtonsST>
                 )}
+                </StateDivST>
             </WrapST>
         </>
     );

@@ -19,8 +19,10 @@ const config: HardhatUserConfig = {
         },
         sepolia: {
             url: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
-            accounts: ["cb27d8183c54f7fbcece11313d75274048a4d8f54767db9a23ae294599cce431"],
+            accounts: require("./accounts.json").privateKey,
             chainId: 11155111,
+            gas: 20000000,
+            gasPrice: 25000000000,
         },
         cronos: {
             url: "https://evm-t3.cronos.org/",

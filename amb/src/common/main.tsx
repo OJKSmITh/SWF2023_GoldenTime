@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil"
 import { Loading } from "@components/loading"
 import { TokenId } from "@utils/localStorage"
 import { useSigner } from "@utils/hooks/useSigner"
+import { Wrap } from "@styled/index"
 
 export const Main = () => {
     const [tokenId, setTokenId] = useRecoilState(TokenId)
@@ -64,21 +65,23 @@ export const Main = () => {
 
     if (isLoading) return <Loading></Loading>
     return (
-        <form onSubmit={handleSubmit}>
-            <Header subject={"응급 환자 발생"} />
-            <Select id="level"></Select>
-            <Select id="ages"></Select>
-            <Select id="gender"></Select>
-            <Select id="state"></Select>
-            <Button
-                id={"submit"}
-                text={"제출하기"}
-                color="#ffffff"
-                bg={"#e24f4f"}
-                height={"5rem"}
-                width={"100%"}
-                margin={"3rem 0 0 0"}
-            ></Button>
-        </form>
+        <Wrap>
+            <form onSubmit={handleSubmit}>
+                <Header subject={"응급 환자 발생"} />
+                <Select id="level"></Select>
+                <Select id="ages"></Select>
+                <Select id="gender"></Select>
+                <Select id="state"></Select>
+                <Button
+                    id={"submit"}
+                    text={"제출하기"}
+                    color="#ffffff"
+                    bg={"#e24f4f"}
+                    height={"5rem"}
+                    width={"100%"}
+                    margin={"3rem 0 0 0"}
+                    ></Button>
+            </form>
+        </Wrap>
     )
 }

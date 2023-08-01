@@ -1,5 +1,5 @@
 import { Btn } from "@components/button/button";
-import { DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
+import { Div, Div2, DivBasicST, DivContentWrapST, DivTextST, DivWrapST } from "@components/div";
 import { IHosMain } from "interface/interface";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -123,29 +123,28 @@ export const AmbSection = ({ Amb, PatientState }: IHosMain) => {
             contract.off("Choice", listener2);
         };
     }, [contract]);
-    console.log(tokenArray[0].tokenId === patientArray[0].tokenId);
-    // console.log(tokenArray[0].hospital === hospitalAddress);
+    
 
     const renderPatientArray = () => {
         return patientArray.map((v, index) => (
-            <>
-                <DivContentWrapST width={"70rem"} flex={"true"} justify={"space-between"}>
+            <Div key={index}>
+                <DivContentWrapST width={"100%"} flex={"true"} justify={"space-between"}>
                     <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
-                        <div>환자{index + 1}</div>
+                        <Div2 KTAS={v.KTAS}>환자{index + 1}</Div2>
                     </DivTextST>
                     <DivTextST width={"15rem"} height={"3rem"} size={"1.5rem"} justify={"space-between"} align={"center"}>
                         <div>{v.tokenBool === null ? <Text text="대기중" /> : v.tokenBool ? <Text text="후송중" color={true} /> : <Text text="타병원후송" color={false} />}</div>
                     </DivTextST>
                 </DivContentWrapST>
                 <Patient key={index} KTAS={v.KTAS} age={v.age} gender={v.gender} state={v.state} tokenId={v.tokenId} tokenBool={v.tokenBool} accept={acceptBtn} reject={rejectBtn}></Patient>
-            </>
+            </Div>
         ));
     };
 
     return (
         <>
             <DivBasicST width={80} height={72}>
-                {renderPatientArray()}
+                {patientArray.length>0 ? renderPatientArray() :<div style={{ margin:"15rem 0 0 0", width:"100%", fontSize:"3rem", textAlign:"center"}}>대기 중입니다.</div>}
             </DivBasicST>
         </>
     );

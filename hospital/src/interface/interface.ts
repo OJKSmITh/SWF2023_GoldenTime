@@ -23,4 +23,9 @@ export interface ICustomModal {
     width?: number
     height?: number
     left?: number
-  }
+}
+  
+export interface IKTASProps {
+    KTAS?: string | number
+    key?: number
+}

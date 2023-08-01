@@ -1,3 +1,4 @@
+import { IKTASProps } from "interface/interface";
 import { DivProps } from "interface/styled.interface";
 import { styled } from "styled-components";
 
@@ -48,4 +49,18 @@ export const DivContentWrapST = styled.div<DivProps>`
     align-items: ${(props) => (props.align ? "center" : "")};
     margin-top: ${(props) => (props.right ? props.right : 0)}rem;
 `;
-
+export const Div = styled.div<IKTASProps>`
+    width: 100%;
+    padding: 1rem;
+    height: auto;
+    &:active{
+        background-color: ${props =>props.KTAS === "KTAS 1단계" ? "#6b81ff;" : props.KTAS === "KTAS 2단계" ? "#ff7a7a;" : props.KTAS === "KTAS 3단계" ? "#f7c758;" : "#cdcdcd;"};
+        border-radius: 2rem;
+    }
+`
+export const Div2 = styled.div<IKTASProps>`
+    width: 100%;
+    height: auto;
+    background-color: ${props => props.KTAS === "KTAS 1단계" ? "#6b81ff;" : props.KTAS === "KTAS 2단계" ? "#ff7a7a;" : props.KTAS === "KTAS 3단계" ? "#f7c758;" : "#cdcdcd;"};
+    color : "#fff";
+`
