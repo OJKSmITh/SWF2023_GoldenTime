@@ -52,6 +52,8 @@ interface Patient {
     state: string;
     tokenId: number;
     tokenBool: boolean | null;
+    accept: (e: React.MouseEvent<HTMLElement>) => Promise<void>;
+    reject: (e: React.MouseEvent<HTMLElement>) => Promise<void>;
 }
 
 export const Patient: React.FC<Patient> = (props) => {
@@ -59,17 +61,6 @@ export const Patient: React.FC<Patient> = (props) => {
 
     const clickHandler = () => {
         setStatus(!status);
-    };
-
-    const acceptBtn = async (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        console.log("승낙");
-        // navigate({ pathname: '/Mypage' });
-    };
-
-    const accept2Btn = async (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        console.log("거절");
     };
 
     return (
@@ -83,8 +74,8 @@ export const Patient: React.FC<Patient> = (props) => {
                 <StateDivST>환자상태 : {props.state}</StateDivST>
                 {status && (
                     <ButtonsST>
-                        <Btn width={8} height={4} text={"수락"} size={2} onclick={acceptBtn}></Btn>
-                        <Btn width={8} height={4} text={"거절"} size={2} onclick={accept2Btn}></Btn>
+                        <Btn width={8} height={4} text={"수락"} size={2} onclick={props.accept} color={"green"}></Btn>
+                        <Btn width={8} height={4} text={"거절"} size={2} onclick={props.reject} color={"red"}></Btn>
                     </ButtonsST>
                 )}
             </WrapST>

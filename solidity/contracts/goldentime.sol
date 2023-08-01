@@ -16,7 +16,8 @@ contract GoldenTime is ERC721URIStorage, Ownable {
 
     event Minted(
         string toInfo,
-        uint256 tokenId
+        uint256 tokenId,
+        address ambaddress
     );
 
     event Emergency(
@@ -57,7 +58,7 @@ contract GoldenTime is ERC721URIStorage, Ownable {
 
         _safeMint(msg.sender, _tokenId);
         _setTokenURI(_tokenId, toInfo);
-        emit Minted(toInfo, _tokenId);
+        emit Minted(toInfo, _tokenId, msg.sender);
         _tokenId++;
     }
 
